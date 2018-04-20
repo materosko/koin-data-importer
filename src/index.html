@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style type="text/css">
+  	html,
+    body {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body style="overflow: hidden; background-color: rgba(0,0,0,0); margin: 0" >
+  <div id="App" style="width: 100%; display: flex; flex-direction: column;"></div>
+</body>
+
+<script type="text/jsx">
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import {AppContainer} from 'react-hot-loader';
+  import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+  const render = () => {
+    const App = require('./app').default;
+    ReactDOM.render(
+      <AppContainer>
+        <MuiThemeProvider>
+          <App />
+        </MuiThemeProvider>
+      </AppContainer>,
+      document.getElementById('App')
+    );
+  }
+
+  render();
+  if (module.hot) {
+    module.hot.accept(render);
+  }
+</script>
+</html>
