@@ -9,6 +9,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 class Transactions extends Component {
   constructor() {
@@ -16,6 +18,8 @@ class Transactions extends Component {
 
     this.handleAllTransactionSelection = this.handleAllTransactionSelection.bind(this);
     this.handleTransactionSelection = this.handleTransactionSelection.bind(this);
+    this.handleTransactionSelection = this.handleTransactionSelection.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
   }
 
   handleAllTransactionSelection(event, checked) {
@@ -24,6 +28,11 @@ class Transactions extends Component {
 
   handleTransactionSelection(index) {
     return (event, checked) => this.props.selectTransaction(index, checked);
+  }
+
+  handleCategoryChange(transactionIndex) {
+    return (proxy, index, categoryId) =>
+      this.props.changeCategory(transactionIndex, categoryId);
   }
 
   render() {
@@ -55,7 +64,23 @@ class Transactions extends Component {
                 <TableRowColumn>{item.date}</TableRowColumn>
                 <TableRowColumn>{item.value}</TableRowColumn>
                 <TableRowColumn>{item.currency}</TableRowColumn>
-                <TableRowColumn>{item.category ? item.category.name : ''}</TableRowColumn>
+                <TableRowColumn>
+                  <SelectField
+                    value={item.category.id}
+                    onChange={this.handleCategoryChange(index)}
+                  >
+                    {
+                      this.props.categories.map(categoryItem =>
+                        <MenuItem
+                          key={categoryItem.id}
+                          value={categoryItem.id}
+                          primaryText={categoryItem.name}
+                        />
+                      )
+                    }
+                  </SelectField>
+                  {item.category ? item.category.name : ''}
+                </TableRowColumn>
                 <TableRowColumn title={item.place}>{item.place}</TableRowColumn>
                 <TableRowColumn>{item.type}</TableRowColumn>
               </TableRow>
@@ -69,8 +94,10 @@ class Transactions extends Component {
 
 Transactions.propTypes = {
   transactions: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
   selectTransactions: PropTypes.func.isRequired,
   selectTransaction: PropTypes.func.isRequired,
+  changeCategory: PropTypes.func.isRequired,
 };
 
 export default Transactions;

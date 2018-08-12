@@ -32,6 +32,7 @@ export default class App extends Component {
     this.handleCheckLogin = this.handleCheckLogin.bind(this);
     this.selectTransaction = this.selectTransaction.bind(this);
     this.selectTransactions = this.selectTransactions.bind(this);
+    this.changeCategory = this.changeCategory.bind(this);
     this.addTransactions = this.addTransactions.bind(this);
   }
 
@@ -156,6 +157,13 @@ export default class App extends Component {
     this.setState({ transactions });
   }
 
+  changeCategory(index, categoryId) {
+    const category = this.state.categories.filter(item => item.id === categoryId)[0];
+    const transactions = this.state.transactions.slice();
+    transactions[index].category = category;
+    this.setState({ transactions });
+  }
+
   addTransactions() {
     this.state.transactions
       .filter(item => item.checked)
@@ -192,8 +200,10 @@ export default class App extends Component {
           return (
             <Step3
               transactions={this.state.transactions}
+              categories={this.state.categories}
               selectTransactions={this.selectTransactions}
               selectTransaction={this.selectTransaction}
+              changeCategory={this.changeCategory}
             />
           );
           break;
